@@ -15,6 +15,8 @@ RUN apk add \
     php7-soap \
     php7-mbstring \
     php7-curl \
+    php7-json \
+    php7-simplexml \
     tzdata
 
 RUN cp /usr/bin/php7 /usr/bin/php \
