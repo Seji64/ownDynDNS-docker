@@ -17,6 +17,7 @@ RUN apk add \
     php7-curl \
     php7-json \
     php7-simplexml \
+    php7-openssl \
     tzdata
 
 RUN cp /usr/bin/php7 /usr/bin/php \
