@@ -52,8 +52,8 @@ if [ ! -z "$PHP_SESSION_COOKIE_HTTPONLY" ]; then sed -i "s/\;\?\\s\?session.cook
 
 # Install ownDynDNS
 echo "Installing ownDynDNS..."
-git clone https://github.com/fernwerker/ownDynDNS /app/
-cp -v /app/*.php /app/public/
+git clone https://github.com/fernwerker/ownDynDNS /tmp/ownDynDNS
+cp -v /tmp/ownDynDNS/*.php /app/public/
 chown -R apache:apache /app && chmod -R 755 /app
 
 # Start (ensure apache2 PID not left behind first) to stop auto start crashes if didn't shut down properly
