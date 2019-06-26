@@ -53,7 +53,8 @@ if [ ! -z "$PHP_SESSION_COOKIE_HTTPONLY" ]; then sed -i "s/\;\?\\s\?session.cook
 # Install ownDynDNS
 echo "Installing ownDynDNS..."
 git clone https://github.com/fernwerker/ownDynDNS /tmp/ownDynDNS
-cp -v /tmp/ownDynDNS/*.php /app/public/
+cp -v /tmp/ownDynDNS/update.php /app/public/update.php
+cp -rv /tmp/ownDynDNS/src /app/public/
 chown -R apache:apache /app && chmod -R 755 /app
 
 #Configure ownDynDNS
@@ -61,41 +62,49 @@ echo "Configure ownDynDNS..."
 
 if [ ! -z "$OWNDYNDNS_USERNAME" ];
 	then
-		awk '{gsub(/\$username.*=.*\;/,"$username = \"'$OWNDYNDNS_USERNAME'\";");}1' /app/public/update.php > tmp.php && mv tmp.php /app/public/update.php
+		echo "username=\"$OWNDYNDNS_USERNAME\"" >> /app/public/.env
 	else
 		echo "[ERROR] OWNDYNDNS_USERNAME Variable is not defined!"
 fi
 
 if [ ! -z "$OWNDYNDNS_PASSWORD" ];
 	then
-		awk '{gsub(/\$password.*=.*\;/,"$password = \"'$OWNDYNDNS_PASSWORD'\";");}1' /app/public/update.php > tmp.php && mv tmp.php /app/public/update.php
+		echo "password=\"$OWNDYNDNS_PASSWORD\"" >> /app/public/.env
 	else
 		echo "[ERROR] OWNDYNDNS_PASSWORD Variable is not defined!"
 fi
 
 if [ ! -z "$NETCUP_APIKEY" ];
 	then
-		awk '{gsub(/\$apiKey.*=.*\;/,"$apiKey = \"'$NETCUP_APIKEY'\";");}1' /app/public/update.php > tmp.php && mv tmp.php /app/public/update.php
+		echo "apiKey=\"$NETCUP_APIKEY\"" >> /app/public/.env
 	else
 		echo "[ERROR] NETCUP_APIKEY Variable is not defined!"
 fi
 
 if [ ! -z "$NETCUP_APIPASSWORD" ];
 	then
-		awk '{gsub(/\$apiPassword.*=.*\;/,"$apiPassword = \"'$NETCUP_APIPASSWORD'\";");}1' /app/public/update.php > tmp.php && mv tmp.php /app/public/update.php
+		echo "apiPassword=\"$NETCUP_APIPASSWORD\"" >> /app/public/.env
 	else
 		echo "[ERROR] NETCUP_APIPASSWORD Variable is not defined!"
 fi
 
 if [ ! -z "$NETCUP_CUSTOMERID" ];
 	then
-		awk '{gsub(/\$customerId.*=.*\;/,"$customerId = \"'$NETCUP_CUSTOMERID'\";");}1' /app/public/update.php > tmp.php && mv tmp.php /app/public/update.php
+		echo "customerId=\"$NETCUP_CUSTOMERID\"" >> /app/public/.env
 	else
 		echo "[ERROR] NETCUP_CUSTOMERID Variable is not defined!"
 fi
 
+if [ ! -z "$DEBUG" ];
+	then
+		echo "debug=true" >> /app/public/.env
+fi
+
+echo "log=true" >> /app/public/.env
+echo "logFile=log.json" >> /app/public/.env
+
 #Clean
-rm -f tmp.php
+rm -rf /tmp/ownDynDNS/
 
 # Start (ensure apache2 PID not left behind first) to stop auto start crashes if didn't shut down properly
 
