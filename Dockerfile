@@ -3,7 +3,7 @@ MAINTAINER Seji64 <seji@tihoda.de>
 
 # Add basics first
 RUN apk update && apk upgrade
-RUN apk add \
+RUN apk --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing add \
     bash \ 
     apache2 \
     openssl \
